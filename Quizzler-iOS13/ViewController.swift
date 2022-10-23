@@ -1,20 +1,53 @@
-//
-//  ViewController.swift
-//  Quizzler-iOS13
-//
-//  Created by Angela Yu on 12/07/2019.
-//  Copyright © 2019 The App Brewery. All rights reserved.
-//
 
 import UIKit
 
 class ViewController: UIViewController {
     
+    @IBOutlet weak var falseButtonOutlet: UIButton!
+    
+    @IBOutlet weak var trueButtonOutlet: UIButton!
+    
+    var quizBrain = QuizBrain()
+
+    
+    @IBOutlet weak var progressBar: UIProgressView!
+    
+    @IBOutlet weak var questionText: UILabel!
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        progressBar.progress = 0
+        
+        
+        
+        questionText.text = quizBrain.questions[quizBrain.questionNumber].q
     }
-
-
+    
+    func changeColor(_ sender:UIButton) {
+        quizBrain.updateQuestionNumber()
+        questionText.text = quizBrain.questions[quizBrain.questionNumber].q
+        let answerIsCorrect = quizBrain.answerIsCorrect(userAnswer: sender.currentTitle!)
+        progressBar.progress = quizBrain.changeProgressBar()
+        
+        answerIsCorrect ? (sender.backgroundColor = .green) : (sender.backgroundColor = .red)
+        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { timer in
+            sender.backgroundColor = .clear
+        }
+        
+        
+    }
+    
+    @IBAction func buttonClicked(_ sender: UIButton) {
+        changeColor(sender)
+      
+     
+         
+    }
+    @IBAction func falseButtonClicked(_ sender: UIButton) {
+        changeColor(sender)
+      
+    }
 }
 
